@@ -1,12 +1,13 @@
 //
 // Created by alexander on 2019-07-30.
 //
+#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 extern "C" {
 #include "LedDriver.h"
 }
 
-TEST_CASE("LedDriver init tests"){
+TEST_CASE("LedDriver_lib init tests"){
     uint16_t virtualLeds;
 
     SECTION("LedsAreOffAfterCreate"){
@@ -16,7 +17,7 @@ TEST_CASE("LedDriver init tests"){
     }
 }
 
-TEST_CASE("LedDriver tests"){
+TEST_CASE("LedDriver_lib tests"){
     uint16_t virtualLeds;
     LedDriver_Create(&virtualLeds);
 

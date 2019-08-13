@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 project(clion_test_summer19)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
-include_directories(inc)
-include_directories(src)
-include_directories(test)
+set(SOURCE_FILES main.cpp)
+add_executable(LedDriver_run ${SOURCE_FILES})
 
-add_executable(clion_test_summer19
-        src/main.cpp
-        test/LedDriverTest.cpp
-        src/LedDriver.c
-        inc/LedDriver.h)
+include_directories(LedDriver_lib)
+add_subdirectory(LedDriver_lib)
+
+target_link_libraries(LedDriver_run LedDriver_lib)
+
+add_subdirectory(test)
