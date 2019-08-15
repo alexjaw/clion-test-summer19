@@ -10,11 +10,13 @@ void TimeService_Create(void){
     fakeTime.dayOfWeek = -1;
 };
 
-void TimeService_Destroy(void){
-
-};
+void TimeService_Destroy(void){};
 
 void TimeService_GetTime(Time * time){
     time->dayOfWeek = fakeTime.dayOfWeek;
     time->minuteOfDay = fakeTime.minuteOfDay;
 };
+
+void FakeTimeService_SetDay(int day){}
+
+void FakeTimeService_SetMinute(int minute){}

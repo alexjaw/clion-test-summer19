@@ -9,5 +9,8 @@
 
 enum {TIME_UNKNOWN = -1};
 
+void FakeTimeService_SetDay(int);
+void FakeTimeService_SetMinute(int);
+
 
 #endif //CLION_TEST_SUMMER19_FAKETIMESERVICE_H
