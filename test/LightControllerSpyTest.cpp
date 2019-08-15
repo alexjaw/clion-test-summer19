@@ -21,4 +21,10 @@ TEST_CASE("LightControllerSpy") {
         REQUIRE(10 == LightControllerSpy_GetLastId());
         REQUIRE(LIGHT_ON == LightControllerSpy_GetLastState());
     }
+
+    SECTION("RememberTheLastLightIdControlledOff") {
+        LightController_Off(42);
+        REQUIRE(42 == LightControllerSpy_GetLastId());
+        REQUIRE(LIGHT_OFF == LightControllerSpy_GetLastState());
+    }
 }
