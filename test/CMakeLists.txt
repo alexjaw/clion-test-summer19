@@ -2,7 +2,9 @@ SET(SOURCE_FILES
         LedDriverTest.cpp
         LightSchedulerTest.cpp
         LightControllerSpyTest.cpp
-        LightControllerSpy.c)
+        LightControllerSpy.c
+        FakeTimeServiceTest.cpp
+        FakeTimeService.c)
 
 add_executable(tests_run ${SOURCE_FILES})
 target_link_libraries(tests_run

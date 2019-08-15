@@ -5,8 +5,6 @@
 #ifndef CLION_TEST_SUMMER19_LIGHTCONTROLLERSPY_H
 #define CLION_TEST_SUMMER19_LIGHTCONTROLLERSPY_H
 
-#endif //CLION_TEST_SUMMER19_LIGHTCONTROLLERSPY_H
-
 #include "LightController.h"
 
 enum
@@ -17,3 +15,5 @@ enum
 
 int LightControllerSpy_GetLastId(void);
 int LightControllerSpy_GetLastState(void);
+
+#endif //CLION_TEST_SUMMER19_LIGHTCONTROLLERSPY_H
