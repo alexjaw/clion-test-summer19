@@ -6,8 +6,8 @@
 static Time fakeTime;
 
 void TimeService_Create(void){
-    fakeTime.minuteOfDay = -1;
-    fakeTime.dayOfWeek = -1;
+    fakeTime.minuteOfDay = TIME_UNKNOWN;
+    fakeTime.dayOfWeek = TIME_UNKNOWN;
 };
 
 void TimeService_Destroy(void){};
@@ -17,6 +17,10 @@ void TimeService_GetTime(Time * time){
     time->minuteOfDay = fakeTime.minuteOfDay;
 };
 
-void FakeTimeService_SetDay(int day){}
+void FakeTimeService_SetDay(int day){
+    fakeTime.dayOfWeek = day;
+}
 
-void FakeTimeService_SetMinute(int minute){}
+void FakeTimeService_SetMinute(int minute){
+    fakeTime.minuteOfDay = minute;
+}

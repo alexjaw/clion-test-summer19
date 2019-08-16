@@ -8,8 +8,9 @@ extern "C" {
 #include "FakeTimeService.h"
 }
 
-TEST_CASE("LightController") {
+TEST_CASE("LightScheduler") {
     LightController_Create();
+    TimeService_Create();
     LightScheduler_Create();
 
     SECTION("NoChangeToLightsDuringInitialization"){
@@ -32,5 +33,23 @@ TEST_CASE("LightController") {
         LightScheduler_WakeUp();
         REQUIRE(LIGHT_ID_UNKNOWN == LightControllerSpy_GetLastId());
         REQUIRE(LIGHT_STATE_UNKNOWN == LightControllerSpy_GetLastState());
+    }
+
+    SECTION("ScheduleOnEverydayItsTime"){
+        LightScheduler_ScheduleTurnOn(3, EVERYDAY, 1200);
+        FakeTimeService_SetDay(MONDAY);
+        FakeTimeService_SetMinute(1200);
+        LightScheduler_WakeUp();
+        REQUIRE(3 == LightControllerSpy_GetLastId());
+        REQUIRE(LIGHT_ON == LightControllerSpy_GetLastState());
+    }
+
+    SECTION("ScheduleOffEverydayItsTime"){
+        LightScheduler_ScheduleTurnOff(3, EVERYDAY, 1200);
+        FakeTimeService_SetDay(MONDAY);
+        FakeTimeService_SetMinute(1200);
+        LightScheduler_WakeUp();
+        REQUIRE(3 == LightControllerSpy_GetLastId());
+        REQUIRE(LIGHT_OFF == LightControllerSpy_GetLastState());
     }
 }

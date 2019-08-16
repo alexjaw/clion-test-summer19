@@ -1,3 +1,9 @@
+/* The design works like this. The client of the LightScheduler is in the AdminConsole subsystem. The AdminConsole
+ * instructs the LightScheduler to turn on and off the lights at specific times during the week. Every minute, the
+ * LightScheduler is pinged through an OS callback from TimeService. The ping triggers the LightScheduler to check its
+ * internally maintained schedule of light control actions. At the appropriate time, the LightScheduler tells the
+ * LightController to turn on or off a light by its id.
+ * */
 //
 // Created by alexander on 2019-08-15.
 //

@@ -5,6 +5,7 @@
 extern "C"
 {
 #include "FakeTimeService.h"
+#include "LightScheduler.h"
 }
 
 TEST_CASE("FakeTimeService")
@@ -18,13 +19,13 @@ TEST_CASE("FakeTimeService")
         REQUIRE(TIME_UNKNOWN == time.dayOfWeek);
     }
 
-    /*SECTION(FakeTimeService, "Set")
+    SECTION("Set")
     {
-    Time time;
-    FakeTimeService_SetMinute(42);
-    FakeTimeService_SetDay(SATURDAY);
-    TimeService_GetTime(&time);
-    LONGS_EQUAL(42, time.minuteOfDay);
-    LONGS_EQUAL(SATURDAY, time.dayOfWeek);
-    }*/
+        Time time;
+        FakeTimeService_SetMinute(42);
+        FakeTimeService_SetDay(SATURDAY);
+        TimeService_GetTime(&time);
+        REQUIRE(42 == time.minuteOfDay);
+        REQUIRE(SATURDAY == time.dayOfWeek);
+    }
 }
