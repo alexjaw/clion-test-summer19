@@ -8,48 +8,51 @@ extern "C" {
 #include "FakeTimeService.h"
 }
 
+void setTimeTo(int day, int minute)
+{
+    FakeTimeService_SetDay(day);
+    FakeTimeService_SetMinute(minute);
+}
+
+void checkLightState(int id, int level)
+{
+    REQUIRE(id == LightControllerSpy_GetLastId());
+    REQUIRE(level == LightControllerSpy_GetLastState());
+}
+
 TEST_CASE("LightScheduler") {
     LightController_Create();
     TimeService_Create();
     LightScheduler_Create();
 
     SECTION("NoChangeToLightsDuringInitialization"){
-        REQUIRE(LIGHT_ID_UNKNOWN == LightControllerSpy_GetLastId());
-        REQUIRE(LIGHT_STATE_UNKNOWN == LightControllerSpy_GetLastState());
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
     }
 
     SECTION("NoScheduleNothingHappens"){
-        FakeTimeService_SetDay(MONDAY);
-        FakeTimeService_SetMinute(100);
+        setTimeTo(MONDAY, 100);
         LightScheduler_WakeUp();
-        REQUIRE(LIGHT_ID_UNKNOWN == LightControllerSpy_GetLastId());
-        REQUIRE(LIGHT_STATE_UNKNOWN == LightControllerSpy_GetLastState());
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
     }
 
     SECTION("ScheduleOnEverydayNotTimeYet"){
         LightScheduler_ScheduleTurnOn(3, EVERYDAY, 1200);
-        FakeTimeService_SetDay(MONDAY);
-        FakeTimeService_SetMinute(1199);
+        setTimeTo(MONDAY, 1199);
         LightScheduler_WakeUp();
-        REQUIRE(LIGHT_ID_UNKNOWN == LightControllerSpy_GetLastId());
-        REQUIRE(LIGHT_STATE_UNKNOWN == LightControllerSpy_GetLastState());
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
     }
 
     SECTION("ScheduleOnEverydayItsTime"){
         LightScheduler_ScheduleTurnOn(3, EVERYDAY, 1200);
-        FakeTimeService_SetDay(MONDAY);
-        FakeTimeService_SetMinute(1200);
+        setTimeTo(MONDAY, 1200);
         LightScheduler_WakeUp();
-        REQUIRE(3 == LightControllerSpy_GetLastId());
-        REQUIRE(LIGHT_ON == LightControllerSpy_GetLastState());
+        checkLightState(3, LIGHT_ON);
     }
 
     SECTION("ScheduleOffEverydayItsTime"){
         LightScheduler_ScheduleTurnOff(3, EVERYDAY, 1200);
-        FakeTimeService_SetDay(MONDAY);
-        FakeTimeService_SetMinute(1200);
+        setTimeTo(MONDAY, 1200);
         LightScheduler_WakeUp();
-        REQUIRE(3 == LightControllerSpy_GetLastId());
-        REQUIRE(LIGHT_OFF == LightControllerSpy_GetLastState());
+        checkLightState(3, LIGHT_OFF);
     }
 }

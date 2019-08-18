@@ -24,31 +24,43 @@ void LightScheduler_Create(void){
     //scheduledEvent.id = UNUSED;
 }
 
-void LightScheduler_ScheduleTurnOn(int id, Day day, int minuteOfDay){
+static void scheduleEvent(int id, Day day, int minuteOfDay, int event){
     scheduledEvent.id = id;
     scheduledEvent.minuteOfDay = minuteOfDay;
-    scheduledEvent.event = TURN_ON;
+    scheduledEvent.event = event;
+}
+
+void LightScheduler_ScheduleTurnOn(int id, Day day, int minuteOfDay){
+    scheduleEvent(id, day, minuteOfDay, TURN_ON);
 }
 
 void LightScheduler_ScheduleTurnOff(int id, Day day, int minuteOfDay){
-    scheduledEvent.id = id;
-    scheduledEvent.minuteOfDay = minuteOfDay;
-    scheduledEvent.event = TURN_OFF;
+    scheduleEvent(id, day, minuteOfDay, TURN_OFF);
+}
+
+/* operateLight captures the idea behind the if/else chain */
+static void operateLight(ScheduledLightEvent * lightEvent){
+    if(lightEvent->event == TURN_ON) {
+        LightController_On(scheduledEvent.id);
+    }else if(lightEvent->event == TURN_OFF){
+        LightController_Off(scheduledEvent.id);
+    }
+}
+
+/* processEventDueNow is responsible for conditionally triggering a single event */
+static void processEventDueNow(Time * time, ScheduledLightEvent * lightEvent){
+    if(scheduledEvent.id == UNUSED){
+        return;
+    }if(scheduledEvent.minuteOfDay != time->minuteOfDay){
+        return;
+    }
+
+    operateLight(lightEvent);
 }
 
 void LightScheduler_WakeUp(void){
     Time time;
     TimeService_GetTime(&time);
 
-    if(scheduledEvent.id == UNUSED){
-        return;
-    }if(scheduledEvent.minuteOfDay != time.minuteOfDay){
-        return;
-    }
-
-    if(scheduledEvent.event == TURN_ON) {
-        LightController_On(scheduledEvent.id);
-    }else if(scheduledEvent.event == TURN_OFF){
-        LightController_Off(scheduledEvent.id);
-    }
+    processEventDueNow(&time, &scheduledEvent);
 }
