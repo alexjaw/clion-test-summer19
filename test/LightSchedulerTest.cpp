@@ -60,4 +60,18 @@ TEST_CASE("LightScheduler") {
         LightScheduler_WakeUp();
         checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
     }
+
+    SECTION("Schedule tuesday and its tuesday"){
+        LightScheduler_ScheduleTurnOn(3, TUESDAY, 1200);
+        setTime(TUESDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_ON);
+    }
+
+    SECTION("Schedule off tuesday and its tuesday"){
+        LightScheduler_ScheduleTurnOff(3, TUESDAY, 1200);
+        setTime(TUESDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_OFF);
+    }
 }
