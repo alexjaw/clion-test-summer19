@@ -74,4 +74,18 @@ TEST_CASE("LightScheduler") {
         LightScheduler_WakeUp();
         checkLightState(3, LIGHT_OFF);
     }
+
+    SECTION("Schedule weekend and its friday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKEND, 1200);
+        setTime(FRIDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
+    }
+
+    SECTION("Schedule weekend and its saturday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKEND, 1200);
+        setTime(SATURDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_ON);
+    }
 }

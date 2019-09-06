@@ -4,6 +4,7 @@
 #include "LightScheduler.h"
 #include "TimeService.h"
 #include "LightController.h"
+#include <stdbool.h>
 
 /* We’ll need a struct to hold the information about each schedule light control. With that struct we’ll create an array
  * to hold the 128 separate scheduled events (128 is the design limit from the requirements).
@@ -21,6 +22,16 @@ static ScheduledLightEvent scheduledEvent;
 
 static enum {UNUSED=-1, TURN_OFF=0, TURN_ON};
 
+static int DoesLightRespondToday(Time * time, int reactionDay){
+    int today = time->dayOfWeek;
+
+    if(reactionDay == EVERYDAY){ return true; }
+    if(reactionDay == today){ return true; }
+    if(reactionDay == WEEKEND && (today == SATURDAY || today == SUNDAY)){ return true; }
+
+    return false;
+}
+
 static void scheduleEvent(int id, Day day, int minuteOfDay, int event){
     scheduledEvent.id = id;
     scheduledEvent.day = day;
@@ -37,12 +48,9 @@ static void operateLight(ScheduledLightEvent * lightEvent){
 }
 
 static void processEventDueTime(Time * time, ScheduledLightEvent * lightEvent){
-    int reactionDay = lightEvent->day;
-    int today = time->dayOfWeek;
-
     if(lightEvent->id == UNUSED){ return; }
 
-    if(reactionDay != EVERYDAY  && reactionDay != today){ return; }
+    if(!DoesLightRespondToday(time, lightEvent->day)){ return; }
 
     if(lightEvent->minuteOfDay != time->minuteOfDay){ return; }
 
