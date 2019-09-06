@@ -53,4 +53,11 @@ TEST_CASE("LightScheduler") {
         LightScheduler_WakeUp();
         checkLightState(3, LIGHT_OFF);
     }
+
+    SECTION("Schedule tuesday but its monday"){
+        LightScheduler_ScheduleTurnOn(3, TUESDAY, 1200);
+        setTime(MONDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
+    }
 }
