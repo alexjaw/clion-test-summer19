@@ -26,8 +26,9 @@ static int DoesLightRespondToday(Time * time, int reactionDay){
     int today = time->dayOfWeek;
 
     if(reactionDay == EVERYDAY){ return true; }
-    if(reactionDay == today){ return true; }
     if(reactionDay == WEEKEND && (today == SATURDAY || today == SUNDAY)){ return true; }
+    if(reactionDay == WEEKDAY && (today >= MONDAY && today <= FRIDAY)) { return true; }
+    if(reactionDay == today){ return true; }
 
     return false;
 }

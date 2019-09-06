@@ -88,4 +88,39 @@ TEST_CASE("LightScheduler") {
         LightScheduler_WakeUp();
         checkLightState(3, LIGHT_ON);
     }
+
+    SECTION("Schedule weekdays and its saturday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKDAY, 1200);
+        setTime(SATURDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
+    }
+
+    SECTION("Schedule weekdays and its sunday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKDAY, 1200);
+        setTime(SUNDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
+    }
+
+    SECTION("Schedule weekdays and its monday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKDAY, 1200);
+        setTime(MONDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_ON);
+    }
+
+    SECTION("Schedule weekdays and its friday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKDAY, 1200);
+        setTime(FRIDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_ON);
+    }
+
+    SECTION("Schedule weekdays and its wednesday"){
+        LightScheduler_ScheduleTurnOn(3, WEEKDAY, 1200);
+        setTime(WEDNESDAY, 1200);
+        LightScheduler_WakeUp();
+        checkLightState(3, LIGHT_ON);
+    }
 }
